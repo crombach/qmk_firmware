@@ -1,0 +1,6 @@
+# Build Options
+NKRO_ENABLE = yes
+ENCODER_ENABLE = yes
+BOOTLOADER = atmel-dfu
+BACKLIGHT_ENABLE = no
+RGBLIGHT_ENABLE = yes
