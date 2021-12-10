@@ -84,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* settings */
 #    define MIN_WALK_SPEED      10
-#    define MIN_RUN_SPEED       40
+#    define MIN_RUN_SPEED       60
 
 /* advanced settings */
 #    define ANIM_FRAME_DURATION 200  // how long each frame lasts in ms
@@ -295,10 +295,9 @@ static void print_status(void) {
 
 static void print_wpm(void) {
     /* wpm counter */
-    oled_set_cursor(0, 14);
-    oled_write(get_u8_str(current_wpm, '0'), false);
     oled_set_cursor(0, 15);
-    oled_write_P(PSTR("wpm"), false);
+    oled_write_P(PSTR(" WPM: "), false);
+    oled_write(get_u8_str(current_wpm, '0'), false);
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
