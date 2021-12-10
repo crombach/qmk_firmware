@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #define OLED_TIMEOUT 120000
 #endif
 
+// Enable split WPM for WPM counter
+#define SPLIT_WPM_ENABLE
+
 // Part of firmware size optimization along with EXTRAFLAGS in rules.mk
 #define NO_ACTION_ONESHOT
 #define NO_ACTION_TAPPING

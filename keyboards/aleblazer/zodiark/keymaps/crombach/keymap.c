@@ -301,8 +301,14 @@ static void print_status(void) {
 static void print_wpm(void) {
     /* wpm counter */
     oled_set_cursor(0, 15);
+    uint8_t wpm = get_current_wpm();
+    char    wpm_str[4];
+    wpm_str[3] = '\0';
+    wpm_str[2] = '0' + wpm % 10;
+    wpm_str[1] = '0' + (wpm /= 10) % 10;
+    wpm_str[0] = '0' + wpm / 10;
     oled_write_P(PSTR(" WPM: "), false);
-    oled_write(get_u8_str(current_wpm, '0'), false);
+    oled_write(wpm_str, false);
 }
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
