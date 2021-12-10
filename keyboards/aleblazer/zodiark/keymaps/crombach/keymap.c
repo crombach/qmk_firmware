@@ -98,8 +98,6 @@ uint32_t anim_sleep = 0;
 uint8_t current_frame = 0;
 /* current row (used for rendering frames) */
 uint8_t current_row = 0;
-/* row offset (for rendering jump animation) */
-uint8_t current_row_offset = 0;
 
 /* status variables */
 int   current_wpm = 0;
@@ -189,6 +187,7 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
     /* animation */
     void animate_luna(void) {
         /* jump */
+        uint8_t current_row_offset = 0;
         if (isJumping || !showedJump) {
             /* clear the bottom line of Luna */
             oled_set_cursor(LUNA_X, LUNA_Y + 2);
@@ -199,7 +198,6 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
             /* clear the line above Luna */
             oled_set_cursor(LUNA_X, LUNA_Y - 1);
             oled_write_P(PSTR("     "), false);
-            current_row_offset = 0;
         }
 
         /* switch frame */
@@ -240,21 +238,19 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
 
 /* KEYBOARD PET END */
 
-static void print_status_narrow(void) {
+static void print_status(void) {
      /* Print current mode */
     oled_set_cursor(0, 1);
     oled_write_P(PSTR("MODE"), false);
     oled_set_cursor(0, 2);
     if (keymap_config.swap_lctl_lgui) {
-        // oled_write_raw_P(mac_logo, sizeof(mac_logo));
         oled_write_P(PSTR("Mac"), false);
     } else {
-        // oled_write_raw_P(windows_logo, sizeof(windows_logo));
         oled_write_P(PSTR("Win"), false);
     }
     oled_set_cursor(0, 3);
     switch (get_highest_layer(default_layer_state)) {
-        case _QWERTY:
+        case _QWERTY:       
             oled_write_P(PSTR("Qwerty"), false);
             break;
         case _GAMING:
@@ -297,11 +293,19 @@ static void print_status_narrow(void) {
     /* KEYBOARD PET RENDER END */
 }
 
+static void print_wpm(void) {
+    /* wpm counter */
+    oled_set_cursor(0, 14);
+    oled_write(get_u8_str(current_wpm, '0'), false);
+    oled_set_cursor(0, 15);
+    oled_write_P(PSTR("wpm"), false);
+}
+
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     if (is_keyboard_master()) {
         return OLED_ROTATION_90;
     }
-    return rotation;
+    return OLED_ROTATION_270;
 }
 
 bool oled_task_user(void) {
@@ -313,10 +317,9 @@ bool oled_task_user(void) {
     /* KEYBOARD PET VARIABLES END */
 
     if (is_keyboard_master()) {
-        print_status_narrow();
+        print_status();
     } else {
-        // TODO: Put something on the right side.
-        // render_logo();
+        print_wpm();
     }
     return false;
 }
