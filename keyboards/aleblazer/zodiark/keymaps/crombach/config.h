@@ -21,4 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   #define OLED_TIMEOUT 400000
 #endif
 
-#define RGBLIGHT_SLEEP 1
+// Part of firmware size optimization along with EXTRAFLAGS in rules.mk
+#define NO_ACTION_MACRO
+#define NO_ACTION_FUNCTION
+#define NO_ACTION_ONESHOT
